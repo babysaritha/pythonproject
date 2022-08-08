@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+This is the Cart page.Proceed to review your items and place the order.
+{% endblock %}
+{% block title %}
+    Cart-Purple company Pvt. Ltd.
+{% endblock %}
+{% block content %}
+{% if not cart_items %}
+<div>
+    <div class="text-center">
+        <br>
+        <h1 class="text-center my_title">
+            Your Shopping Cart is empty
+        </h1>
+        <br>
+        <p class="text-center">
+Please Click <a href="{% url 'ecommerceapp:allProdCart' %}">Here</a>to continue shopping.
+
+        </p>
+    </div>
+</div>
+{% else %}
+<div>
+    <div class="text-center">
+        <br>
+        <h1 class="text-center my_title">
+            Your Shopping Cart
+        </h1>
+        <br>
+    </div>
+    <div class="row mx_auto">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+            <table class="table my_custom_table">
+                <thead class="my_custom_thread">
+                <tr>
+                    <th colspan="5">
+                        Your Items
+
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cart_item in cart_items %}
+                <tr>
+                    <th>
+                        <a href="cart_item.product.get_absolute_url"><img src="{{cart_item.product.image.url}}"  alt="" style="width:75px; height:75px;"class="float-left rounded custom_image"> </a>
+                    </th>
+                    <td class="text-left">
+                        {{cart_item.Product.name}}
+                        <br>
+                        SKU: {{cart_item.product.id}}
+                        <br>
+                        Prize: $ {{ cart_item.product.prize}}
+                        <br>
+                        Qty: {{cart_item.quantity}} x {{cart_item}}
+                    </td>
+                    <td>
+                        $ {{cart_item.sub_total}}
+                    </td>
+                    {% if cart_item.quantity < cart_item.product.stock %}
+                    <td>
+                        <a href="{% url 'add_to_cart:add_to_cart' cart_item.product_id %}" class="custom_a"> <i class="fa fa-plus custom_icon"></i></a>&nbsp;<br>
+                        &nbsp;<a href="{% url 'add_to_cart:cart_remove' cart_item.product_id %}" class="custom_a"> <i class="fa fa-minus custom_icon"> </i></a>&nbsp;<br>
+                        &nbsp;<a href="{% url 'add_to_cart:full_remove' cart_item.product_id %}" class="custom_icon"> <i class="fa fa-trash custom_icon">  </i></a>
+                    </td>
+                    {% else %}
+                    <td>
+                        &nbsp;<a href="{% url 'add_to_cart:cart_remove' cart_item.product_id %}" class="custom_a"> <i class="fa fa-minus custom_icon"> </i></a>&nbsp;<br>
+                        &nbsp;<a href="{% url 'add_to_cart:full_remove' cart_item.product_id %}" class="custom_icon"> <i class="fa fa-trash custom_icon">  </i></a>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+            <table class="table my_custom_table">
+                <thead class="my_custom_thread">
+                <tr>
+                    <th>
+                        Checkout
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        Please review your cart items before proceeding with the order payment.
+                    </td>
+                </tr>
+                </tbody>
+                <tr>
+                    <td class="text-left">
+                     Total amount is : <strong>{{total}}</strong>
+                    </td>
+                </tr>
+            </table>
+        <div class="row ">
+            <a href="{% url 'ecommerceapp:allProdCat' %}" class="btn btn-primary w-50"> Continue Shopping</a>
+
+            <a href="{% url 'ecommerceapp:allProdCat' %}" class="btn btn-success w-50">Payment</a>
+          </div>
+    </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
